@@ -6,10 +6,10 @@ settings:
 
 dependencies:
   decky-frontend-lib:
-    specifier: ^3.20.7
-    version: 3.20.7
+    specifier: ^3.24.1
+    version: 3.24.1
   react-icons:
-    specifier: ^4.8.0
+    specifier: ^4.12.0
     version: 4.12.0
 
 devDependencies:
@@ -787,8 +787,8 @@ packages:
       ms: 2.1.2
     dev: true
 
-  /decky-frontend-lib@3.20.7:
-    resolution: {integrity: sha512-Zwwbo50cqpTbCfSCZaqITgTRvWs7pK9KO1A+Oo2sCC/DqOfyUtEH5niNPid4Qxu+yh4lsbEjTurJk1nCfd+nZw==}
+  /decky-frontend-lib@3.24.1:
+    resolution: {integrity: sha512-VGxLTPetxx/pQVC+t8odTHrwQAh7uy4bO2Od2gGWSTfmUUoxtAcEtiXGyE9mKsoD6t7QNHrGvgXn78sf2i/IeQ==}
     dev: false
 
   /deep-is@0.1.4:
