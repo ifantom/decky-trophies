@@ -1,0 +1,10 @@
+{
+  "name": "Trophies",
+  "author": "ifantom",
+  "flags": [],
+  "publish": {
+    "tags": ["achievement", "trophies"],
+    "description": "Display your achievement trophies on home, library and game pages",
+    "image": "https://raw.githubusercontent.com/ifantom/decky-trophies/main/assets/publish_image.jpg"
+  }
+}

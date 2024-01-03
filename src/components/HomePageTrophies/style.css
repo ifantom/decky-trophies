@@ -1,0 +1,22 @@
+.HomePageTrophies__Container {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.HomePageTrophies__Trophy {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.HomePageTrophies__Container--Right {
+  flex-direction: row-reverse;
+}
+
+.HomePageTrophies__Container--Right * {
+  flex-direction: row-reverse;
+}
