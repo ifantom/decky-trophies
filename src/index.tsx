@@ -1,38 +1,46 @@
-import React from 'react'
-import { definePlugin, ServerAPI, staticClasses } from 'decky-frontend-lib'
-import { FaTrophy } from 'react-icons/fa'
+import SettingsBus from "./SettingsBus";
+import Settings from "./components/Settings";
+import { FaTrophy } from "react-icons/fa";
+import { definePlugin, staticClasses } from "@decky/ui";
+import { patchHomePage, patchLibraryAppPage, patchLibraryPage, unpatchLibraryPage } from "./patches";
+import { routerHook } from "@decky/api";
 
-import { patchHomePage, patchLibrary, patchLibraryApp, unpatchLibrary } from './patches'
-import SettingsBus from './lib/SettingsBus'
-import Settings from './components/Settings'
+declare global {
+  let appAchievementProgressCache: {
+    m_achievementProgress?: { mapCache?: Map<number | string, SteamAchievementProgressCache> };
+    GetAchievementProgress: (appId: number) => number;
+  };
+}
 
-export default definePlugin((serverAPI: ServerAPI) => {
-  const settings = new SettingsBus()
+export default definePlugin(() => {
+  const settings = new SettingsBus();
 
-  const libraryAppPatch = patchLibraryApp(serverAPI, settings)
-  const homePagePatch = patchHomePage(serverAPI, settings)
+  const homePagePatch = patchHomePage(settings);
+  const libraryAppPagePatch = patchLibraryAppPage(settings);
 
-  let libraryPageTrophyReplace = settings.value.libraryPageTrophyReplace
-
-  if (libraryPageTrophyReplace) patchLibrary()
+  let libraryPageTrophyReplace = settings.value.libraryPageTrophyReplace;
+  if (libraryPageTrophyReplace) patchLibraryPage();
 
   settings.subscribe((value) => {
-    if (value.libraryPageTrophyReplace === libraryPageTrophyReplace) return
+    console.log("settings.subscribe", value);
 
-    libraryPageTrophyReplace = value.libraryPageTrophyReplace
+    if (value.libraryPageTrophyReplace === libraryPageTrophyReplace) return;
 
-    return libraryPageTrophyReplace ? patchLibrary() : unpatchLibrary()
-  })
+    libraryPageTrophyReplace = value.libraryPageTrophyReplace;
+
+    return libraryPageTrophyReplace ? patchLibraryPage() : unpatchLibraryPage();
+  });
 
   return {
     title: <div className={staticClasses.Title}>Achievement Trophies</div>,
     icon: <FaTrophy />,
     content: <Settings settings={settings} />,
     onDismount() {
-      serverAPI.routerHook.removePatch('/library/app/:appid', libraryAppPatch)
-      serverAPI.routerHook.removePatch('/library/home', homePagePatch)
-      settings.unsubscribe()
-      unpatchLibrary()
-    }
-  }
-})
+      settings.unsubscribe();
+
+      routerHook.removePatch("/library/app/:appid", libraryAppPagePatch);
+      routerHook.removePatch("/library/home", homePagePatch);
+      unpatchLibraryPage();
+    },
+  };
+});

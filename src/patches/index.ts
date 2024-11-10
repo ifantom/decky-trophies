@@ -1,3 +1,3 @@
 export * from './patchHomePage'
-export * from './patchLibraryApp'
+export * from './patchLibraryAppPage'
 export * from './patchLibraryHome'

@@ -1,43 +1,30 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from "react";
+import { getTrophy, getTrophyCSS } from "../../functions";
+import SettingsBus from "../../SettingsBus";
+import TrophyPosition from "../../../types/TrophyPosition";
 
-import { getMyAchievementsForApp, getTrophy, getTrophyCSS } from '../../actions'
-import SettingsBus from '../../lib/SettingsBus'
-import TrophyPosition from '../../../types/TrophyPosition'
-
-export default function AppPageTrophy({ appId, settings }: { appId: string; settings: SettingsBus }): ReactElement {
-  const [achievements, setAchievements] = useState<Achievement[]>([])
-  const [position, setPosition] = useState<TrophyPosition>(settings.value.appPageTrophyPosition)
-  const [show, setShow] = useState<boolean>(settings.value.appPageTrophyShow)
-
-  useEffect(() => {
-    if (appId) {
-      getMyAchievementsForApp(appId).then(setAchievements)
-    }
-  }, [appId])
+export default function AppPageTrophy({ appId, settings }: { appId: number; settings: SettingsBus }): ReactElement {
+  const [position, setPosition] = useState<TrophyPosition>(settings.value.appPageTrophyPosition);
+  const [show, setShow] = useState<boolean>(settings.value.appPageTrophyShow);
 
   useEffect(() => {
     return settings.subscribe((value) => {
-      if (value.appPageTrophyPosition !== position) {
-        setPosition(value.appPageTrophyPosition)
-      }
+      if (value.appPageTrophyPosition !== position) setPosition(value.appPageTrophyPosition)
+      if (value.appPageTrophyShow !== show) setShow(value.appPageTrophyShow)
+    });
+  });
 
-      if (value.appPageTrophyShow !== show) {
-        setShow(value.appPageTrophyShow)
-      }
-    })
-  })
+  if (!show) return <></>;
 
-  if (!show || !achievements.length) return <></>
+  const progress = appAchievementProgressCache.GetAchievementProgress(appId);
 
-  const achieved = achievements.filter((achievement) => achievement.bAchieved)
+  if (!progress) return <></>;
 
-  if (!achieved.length) return <></>
+  const trophy = getTrophy(progress);
 
-  const trophy = getTrophy(achievements.length, achieved.length)
+  if (!trophy) return <></>;
 
-  if (!trophy) return <></>
+  const css = getTrophyCSS(trophy, position);
 
-  const css = getTrophyCSS(trophy, position)
-
-  return <style>{css}</style>
+  return <style>{css}</style>;
 }

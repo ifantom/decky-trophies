@@ -1,10 +1,11 @@
 {
   "name": "Trophies",
-  "author": "ifantom",
+  "author": "Vlad S. (ifantom)",
   "flags": [],
+  "api_version": 1,
   "publish": {
     "tags": ["achievement", "trophies"],
-    "description": "Display your achievement trophies on home, library and game pages",
-    "image": "https://raw.githubusercontent.com/ifantom/decky-trophies/main/assets/publish_image.jpg"
+    "description": "Display your achievements trophies on home, library and game pages. Trophies are based on the percentage of unlocked achievements per game.",
+    "image": "https://raw.githubusercontent.com/ifantom/decky-trophies/main/assets/screenshot.jpg"
   }
 }

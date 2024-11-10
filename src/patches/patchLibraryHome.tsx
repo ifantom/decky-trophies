@@ -1,16 +1,17 @@
-import { findModule, findSP } from 'decky-frontend-lib'
+import Platinum from "../../assets/trophies/trophy-platinum.png";
+import { findClassByName, findSP } from "@decky/ui";
 
-import Platinum from '../../assets/trophies/trophy-platinum.png'
+export function patchLibraryPage() {
+  const document = findSP().window.document;
+  const className = findClassByName("ClassAllAchieved");
 
-export function patchLibrary() {
-  const document = findSP().window.document
-  let style = document.getElementById('achievement-trophies-library-patch')
+  let style = document.getElementById("achievement-trophies-library-patch");
 
-  if (!style) {
-    style = document.createElement('style')
-    style.id = 'achievement-trophies-library-patch'
+  if (!style && className) {
+    style = document.createElement("style");
+    style.id = "achievement-trophies-library-patch";
     style.textContent = `
-      .${appPortraitClasses.ClassAllAchieved} svg {
+      .${className} svg {
         background: url(${encodeURI(Platinum)});
         background-size: 40px;
         background-repeat: no-repeat;
@@ -19,20 +20,18 @@ export function patchLibrary() {
         top: -12px !important;
       }
       
-      .${appPortraitClasses.ClassAllAchieved} svg * {
+      .${className} svg * {
         display: none;
       }
-    `
-    document.head.append(style)
+    `;
+    document.head.append(style);
   }
 }
 
-export function unpatchLibrary() {
-  let style = findSP().window.document.getElementById('achievement-trophies-library-patch')
+export function unpatchLibraryPage() {
+  let style = findSP().window.document.getElementById("achievement-trophies-library-patch");
 
-  style?.remove()
+  console.log('unpatchLibraryPage', style);
+
+  style?.remove();
 }
-
-const appPortraitClasses: Record<'ClassAllAchieved', string> = findModule(
-  (mod) => typeof mod === 'object' && mod?.Capsule?.includes('appportrait_')
-)
